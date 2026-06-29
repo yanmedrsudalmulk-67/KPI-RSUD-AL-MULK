@@ -142,10 +142,12 @@ export default function PilarDetail({
                   website: parsed.social_media.website || ""
                 });
               }
-            } catch (e) {}
+            } catch {
+              // ignore
+            }
           }
-        } catch (e) {
-          console.error("Error fetching social media:", e);
+        } catch {
+          console.error("Error fetching social media");
         }
       }
 
@@ -322,7 +324,7 @@ export default function PilarDetail({
               url: d.dokumen_url,
             });
           }
-        } catch (e) {
+        } catch {
           docs.push({
             id: `${index}`,
             month: d.name,
@@ -350,10 +352,6 @@ export default function PilarDetail({
     ind.nama_indikator.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
-  const totalTarget = indicators.reduce(
-    (sum, ind) => sum + Number(ind.target_tahunan || 0),
-    0,
-  );
   const totalProgress = indicators.reduce((sum, ind) => sum + ind.progress, 0);
   const avgProgress =
     indicators.length > 0 ? (totalProgress / indicators.length).toFixed(1) : 0;

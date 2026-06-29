@@ -54,9 +54,6 @@ export async function getIndicatorsByPilar(pilarId: number) {
 
   return (data || []).map(ind => {
     let nama_indikator = ind.uraian_kpi || ind.nama_indikator || ind.name;
-    if (nama_indikator === "Jumlah PPPK/PWTHL yang dapat ditampung") {
-      nama_indikator = "Jumlah PPPKPW/THL yang dapat ditampung";
-    }
     return {
       ...ind,
       nama_indikator,
@@ -126,9 +123,6 @@ export async function getPilarDetail(pilarId: number, tahun?: number, bulan?: nu
     }
 
     let nama_indikator = ind.uraian_kpi || ind.nama_indikator || ind.name;
-    if (nama_indikator === "Jumlah PPPK/PWTHL yang dapat ditampung") {
-      nama_indikator = "Jumlah PPPKPW/THL yang dapat ditampung";
-    }
 
     return {
       ...ind,
@@ -156,9 +150,6 @@ export async function getIndicators() {
   
   return (data || []).map(ind => {
     let nama_indikator = ind.uraian_kpi || ind.nama_indikator || ind.name;
-    if (nama_indikator === "Jumlah PPPK/PWTHL yang dapat ditampung") {
-      nama_indikator = "Jumlah PPPKPW/THL yang dapat ditampung";
-    }
     return {
       ...ind,
       nama_indikator
@@ -261,9 +252,6 @@ export async function getAllDataForAnalytics() {
   
   return (data || []).map(ind => {
     let nama_indikator = ind.uraian_kpi || ind.nama_indikator || ind.name;
-    if (nama_indikator === "Jumlah PPPK/PWTHL yang dapat ditampung") {
-      nama_indikator = "Jumlah PPPKPW/THL yang dapat ditampung";
-    }
     return {
       ...ind,
       nama_indikator
@@ -328,21 +316,21 @@ export async function getIndicatorsWithCapaianByYear(tahun: number) {
     return [];
   }
 
-  const { data: capaians, error: errCap } = await supabase!
+  const { data: capaians, error } = await supabase!
     .from('capaian_kpi')
     .select('*')
     .eq('tahun', tahun);
   
   const capData = capaians || [];
+  if (error) {
+     console.error("Error fetching capaians", error);
+  }
 
   return finalIndicators.map(ind => {
     const indCapaians = capData.filter(c => c.indikator_id === ind.id);
     const pilarName = ind.pilar || '';
 
     let nama_indikator = ind.uraian_kpi || ind.nama_indikator || ind.name;
-    if (nama_indikator === "Jumlah PPPK/PWTHL yang dapat ditampung") {
-      nama_indikator = "Jumlah PPPKPW/THL yang dapat ditampung";
-    }
 
     return {
       ...ind,
